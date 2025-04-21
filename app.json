@@ -1,0 +1,32 @@
+{
+  "name": "Agentforce Headless Agent + Next.js Demo",
+  "description": "Next.js demo app showcasing the integration with Salesforce Agentforce using the Agent API",
+  "repository": "https://github.com/misu007/agentforce-headless-agent-nextjs-demo",
+  "logo": "https://node-js-sample-1234567890ab.herokuapp.com/node.png",
+  "env": {
+    "SF_MY_DOMAIN_URL": {
+      "description": "My Domain URL for your Salesforce org",
+      "value": ""
+    },
+    "SF_AGENT_ID": {
+      "description": "Agent ID of Agentforce",
+      "value": ""
+    },
+    "SF_CONSUMER_KEY": {
+      "description": "Consumer Key for Salesforce External App",
+      "value": ""
+    },
+    "SF_CONSUMER_SECRET": {
+      "description": "Consumer Secret for Salesforce External App",
+      "value": ""
+    },
+    "BASIC_AUTH_USERNAME": {
+      "description": "Username for BASIC Auth",
+      "value": ""
+    },
+    "BASIC_AUTH_PASSWORD": {
+      "description": "Password for BASIC Auth",
+      "value": ""
+    }
+  }
+}
