@@ -111,6 +111,7 @@ export default function ChatContainer() {
   };
 
   const postedMessage = async (message: string) => {
+    console.log("postedMessage", message);
     addMessage("user", message);
     handlePostMessage(message, messages.length);
   };
