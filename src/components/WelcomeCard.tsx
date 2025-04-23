@@ -15,10 +15,14 @@ export default function WelcomeCard() {
   }, []);
 
   const doInit = async () => {
-    const { sessionId, messages } = await newSession();
-    setSessionId(sessionId);
-    const message = messages[0].message;
-    setWelcomeMessage(message);
+    try {
+      const { sessionId, messages } = await newSession();
+      setSessionId(sessionId);
+      const message = messages[0].message;
+      setWelcomeMessage(message);
+    } catch (error) {
+      alert(`【エラー発生】 ${error}`);
+    }
   };
 
   const postedMessage = (message: string) => {

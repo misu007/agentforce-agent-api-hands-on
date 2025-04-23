@@ -11,21 +11,30 @@ const getToken = async () => {
   params.append("grant_type", "client_credentials");
   params.append("client_id", SF_CONSUMER_KEY);
   params.append("client_secret", SF_CONSUMER_SECRET);
-  const res = await fetch(
-    `https://${SF_MY_DOMAIN_URL}/services/oauth2/token?${params.toString()}`,
-    {
-      method: "post",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      cache: "force-cache",
-      next: { revalidate: 1200 },
-    }
-  );
-  const data = await res.json();
-  const accessToken = data["access_token"];
-  const apiInstanceUrl = data["api_instance_url"];
-  return { accessToken, apiInstanceUrl };
+  try {
+    const res = await fetch(
+      `https://${SF_MY_DOMAIN_URL}/services/oauth2/token?${params.toString()}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        cache: "force-cache",
+        next: { revalidate: 1200 },
+      }
+    );
+    console.log("res", res);
+    if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
+    const data = await res.json();
+    const accessToken = data["access_token"];
+    const apiInstanceUrl = data["api_instance_url"];
+    return { accessToken, apiInstanceUrl };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "";
+    throw new Error(
+      `Agentforce API "トークン取得" でエラーが発生しました: ${errorMessage}`
+    );
+  }
 };
 
 export const newSession = async () => {
@@ -42,20 +51,30 @@ export const newSession = async () => {
     },
     bypassUser: true,
   };
-  const res = await fetch(
-    `${apiInstanceUrl}/einstein/ai-agent/v1/agents/${SF_AGENT_ID}/sessions`,
-    {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(payload),
-    }
-  );
-  const data = await res.json();
 
-  return data;
+  try {
+    const res = await fetch(
+      `${apiInstanceUrl}/einstein/ai-agent/v1/agents/${SF_AGENT_ID}/sessions`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+    console.log("res", res);
+    if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "";
+    throw new Error(
+      `Agentforce API "セッション開始" でエラーが発生しました: ${errorMessage}`
+    );
+  }
 };
 
 export const endSession = async (sessionId: string) => {
@@ -149,7 +168,6 @@ export const sendStreamingMessage = async (
     /* 選択肢 (C) */
     // Accept : "application/stream+json"
   };
-
   try {
     const res = await fetch(`${apiInstanceUrl}${endpoint}`, {
       method: "post",
@@ -162,10 +180,9 @@ export const sendStreamingMessage = async (
     const data = res.body;
     return data;
   } catch (error) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "Agentforce APIの呼び出しでエラーが発生しました";
-    throw new Error(errorMessage);
+    const errorMessage = error instanceof Error ? error.message : "";
+    throw new Error(
+      `Agentforce API "ストリーミングでのメッセージ送信" でエラーが発生しました: ${errorMessage}`
+    );
   }
 };

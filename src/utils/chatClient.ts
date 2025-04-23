@@ -31,9 +31,7 @@ export const sendStreamingMessage = async ({
       const errorData = await res.json();
       console.log("res", res);
       console.log("errorData", errorData);
-      alert(
-        `Agentforce API呼び出しでエラーが発生しました: ${errorData.message}`
-      );
+      alert(`【エラー発生】 ${errorData.message}`);
       return;
     }
 
