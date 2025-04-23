@@ -121,7 +121,7 @@ export const sendStreamingMessage = async (
     ================================
     */
     /* 選択肢 (A) */
-    // message: {type: "Text", message: text},
+    // message: {type: "stream", message: text},
     /* 選択肢 (B) */
     // message: { sequenceId: sequenceId, type: "Text", text: text },
     /* 選択肢 (C) */
@@ -143,11 +143,11 @@ export const sendStreamingMessage = async (
     ================================
     */
     /* 選択肢 (A) */
-    // Accept: "text/event-stream",
+    // Accept: "text/plain",
     /* 選択肢 (B) */
-    // Accept : "text/streaming-events"
+    // Accept : "text/event-stream"
     /* 選択肢 (C) */
-    // Accept : "text/server-sent-events"
+    // Accept : "application/stream+json"
   };
 
   try {
